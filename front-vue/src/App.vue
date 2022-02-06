@@ -60,7 +60,7 @@ export default {
         this.isContactsLoading = false;
       }
     },
-    filterOnlyCapsText(value, search) {
+    filterText(value, search) {
       return (
         value != null &&
         search != null &&
