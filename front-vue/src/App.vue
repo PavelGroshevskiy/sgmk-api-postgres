@@ -1,12 +1,20 @@
 <template>
   <div>
     <v-data-table
+      v-if="!isContactsLoading"
       :headers="headers"
       :items="contacts"
+      :items-per-page="10"
       item-key="id"
       class="elevation-1"
       :search="search"
-      :custom-filter="filteText"
+      :footer-props="{
+        showFirstLastPage: true,
+        firstIcon: 'mdi-arrow-collapse-left',
+        lastIcon: 'mdi-arrow-collapse-right',
+        prevIcon: 'mdi-minus',
+        nextIcon: 'mdi-plus',
+      }"
     >
       <template v-slot:top>
         <v-text-field
@@ -18,6 +26,17 @@
     </v-data-table>
   </div>
 </template>
+
+<div v-else>
+        <template>
+          <v-data-table
+            item-key="name"
+            class="elevation-1"
+            loading
+            loading-text="Loading... Please wait"
+          ></v-data-table>
+        </template>
+      </div>
 
 <script>
 import axios from "axios";
@@ -59,14 +78,6 @@ export default {
       } finally {
         this.isContactsLoading = false;
       }
-    },
-    filterText(value, search) {
-      return (
-        value != null &&
-        search != null &&
-        typeof value === "string" &&
-        value.toString().toLocaleUpperCase().indexOf(search) !== -1
-      );
     },
   },
   mounted() {
